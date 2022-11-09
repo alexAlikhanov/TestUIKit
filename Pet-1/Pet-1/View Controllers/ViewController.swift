@@ -12,13 +12,18 @@ class ViewController: UIViewController {
     private var imageView: UIImageView!
     private var imageView2: UIImageView!
     private var image: [UIImage] = [UIImage(), UIImage()]
+    private let URLs = ["https://i.redd.it/096oc5ubc5381.jpg","https://i.redd.it/096oc5ubc5381.jpg"]
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         print("viewdidload")
-        loadData()
+//        loadData()
 //        fetchImage()
 //        fetchImage2()
+//        asyncLoadImageGroup()
+
+         
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -93,5 +98,39 @@ class ViewController: UIViewController {
         }
         task.resume()
     }
+    
+    private func asyncLoadImage(imageUrl: URL, runQueue: DispatchQueue,
+                        complitionQueue: DispatchQueue,
+                        complition: @escaping(UIImage?, Error?) -> ()){
+        runQueue.async {
+            do {
+                let data = try Data(contentsOf: imageUrl)
+                complitionQueue.async {complition(UIImage(data: data), nil)}
+            }
+            catch let error {
+                complitionQueue.async {complition(nil, error)
+                }
+            }
+        }
+    }
+    
+    func asyncLoadImageGroup(){
+        var imageArray = [UIImage]()
+        let group = DispatchGroup()
+        for i in 0...1{
+            group.enter()
+            asyncLoadImage(imageUrl: URL(string: URLs[i])!, runQueue: .global(), complitionQueue: .global()) { result, error in
+                guard let image = result else {return}
+                imageArray.append(image)
+                group.leave()
+            }
+        }
+        group.notify(queue: .main){
+            self.imageView.image = imageArray[0]
+            self.imageView2.image = imageArray[1]
+
+        }
+    }
+    
 }
 
