@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MARK: - SceneDelegate
 extension SceneDelegate: UITabBarControllerDelegate {
     
     func createImageTabBar() {
@@ -39,3 +40,7 @@ extension SceneDelegate: UITabBarControllerDelegate {
         return true
     }
 }
+
+
+
+

@@ -32,7 +32,7 @@ class FirstRootViewController: BasicFirstNavigator {
     }
     
     @objc func nextButtonAction(sender: UIButton){
-        navigator?.show(.vc12)
+        navigator?.show(.vc13)
     }
 
 }

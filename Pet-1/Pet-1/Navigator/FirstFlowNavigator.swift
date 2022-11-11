@@ -44,7 +44,7 @@ extension FirstFlowNavigator: Navigator {
         case .vc12:
             distVC = ViewController()
         case .vc13:
-            distVC = FirstRootViewController()
+            distVC = TableViewController()
         }
         
         navigationController.pushViewController(distVC, animated: true)
