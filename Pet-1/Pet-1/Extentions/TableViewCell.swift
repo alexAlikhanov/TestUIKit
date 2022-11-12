@@ -8,8 +8,8 @@
 import UIKit
 
 class TableViewCell: UITableViewCell {
-    
-    var data : PostModel!
+    let networkManager = NetworkManager()
+    var postData : PostModel!
     private let loadIndicator = UIActivityIndicatorView()
     private let myImageView: UIImageView = {
         let imageView = UIImageView()
@@ -33,25 +33,33 @@ class TableViewCell: UITableViewCell {
     }()
     private var body : UILabel = {
         let body = UILabel()
+        body.numberOfLines = 1
         return body
     }()
 
  
     
     func config(){
-        userId.text = String(data.userId)
-        title.text = data.title
-        body.text = data.body
+        loadIndicator.startAnimating()
+        userId.text = String(postData.userId)
+        title.text = postData.title
+        body.text = postData.body
+        networkManager.getFirstPhotoInAlbumBy(id: postData.userId) { [weak self] data in
+            DispatchQueue.main.async {
+                self?.myImageView.image = UIImage(data: data)
+                self?.loadIndicator.stopAnimating()
+            }
+        }
     }
     
     override func prepareForReuse() {
-        //myImageView.image = nil
+        myImageView.image = nil
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style, reuseIdentifier: "Cell")
-        //contentView.addSubview(myImageView)
-        //contentView.addSubview(loadIndicator)
+        contentView.addSubview(myImageView)
+        contentView.addSubview(loadIndicator)
         //selectionStyle = .none
         contentView.addSubview(userId)
         contentView.addSubview(id)
@@ -82,11 +90,17 @@ class TableViewCell: UITableViewCell {
             body.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 5),
             body.widthAnchor.constraint(equalToConstant: contentView.safeAreaLayoutGuide.layoutFrame.size.width - 5)
         ])
-        
-        
-        
-        
-        
+        NSLayoutConstraint.activate([
+            myImageView.topAnchor.constraint(equalTo: body.bottomAnchor, constant: 5),
+            myImageView.widthAnchor.constraint(equalToConstant: contentView.safeAreaLayoutGuide.layoutFrame.width - 50),
+            myImageView.heightAnchor.constraint(equalToConstant: 300),
+            myImageView.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            loadIndicator.centerXAnchor.constraint(equalTo: myImageView.centerXAnchor),
+            loadIndicator.centerYAnchor.constraint(equalTo: myImageView.centerYAnchor)
+        ])
+
     }
     
     required init?(coder: NSCoder) {

@@ -9,10 +9,11 @@ import UIKit
 
 class TableViewController: UIViewController {
     
+    private let identifire = "Cell"
     private var myTableView = UITableView()
-    let identifire = "Cell"
     private var networkManager = NetworkManager()
     private var posts: [PostModel] = []
+    private var photos: [PhotoModel] = []
     private var refresh = UIRefreshControl()
     
     
@@ -31,7 +32,7 @@ class TableViewController: UIViewController {
         
     }
     
-    func createTableView(){
+    private func createTableView(){
         myTableView = UITableView(frame: view.bounds, style: .plain)
         myTableView.register(TableViewCell.self, forCellReuseIdentifier: identifire)
         myTableView.delegate = self
@@ -52,7 +53,6 @@ class TableViewController: UIViewController {
                 self?.posts = posts
                 self?.refresh.endRefreshing()
                 self?.myTableView.reloadData()
-                print(self?.posts[0].userId ?? "nil")
             }
         }
     }
@@ -60,20 +60,21 @@ class TableViewController: UIViewController {
 
 extension TableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(posts.count)
         return posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: self.identifire, for: indexPath) as? TableViewCell else { return UITableViewCell()}
-        cell.data = posts[indexPath.row]
+        cell.postData = posts[indexPath.row]
         cell.config()
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
+        400
     }
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
 }

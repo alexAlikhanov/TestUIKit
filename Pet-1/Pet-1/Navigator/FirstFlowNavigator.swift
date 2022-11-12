@@ -37,7 +37,6 @@ extension FirstFlowNavigator: Navigator {
     
     func show(_ distination: Distination) {
         var distVC : UIViewController = FirstRootViewController()
-        print("1")
         switch distination {
         case .vc11:
             distVC = FirstRootViewController()

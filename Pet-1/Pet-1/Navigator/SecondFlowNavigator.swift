@@ -37,7 +37,6 @@ extension SecondFlowNavigator: Navigator {
     }
     func show(_ distination: Distination) {
         let distVC: UIViewController!
-        print("2")
         switch distination {
         case .vc21:
             distVC = SecondRootViewController()
