@@ -10,6 +10,7 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
     let networkManager = NetworkManager()
     private let loadIndicator = UIActivityIndicatorView()
+    let a = UIScrollView()
     var postData : PostModel!
     var imageView : UIImageView = {
        var img = UIImageView()
@@ -18,7 +19,6 @@ class CollectionViewCell: UICollectionViewCell {
         img.layer.masksToBounds = true
         return img
     }()
-    
     
     override init(frame: CGRect) {
         super .init(frame: CGRect(x: 5, y: 5, width: 100, height: 100))

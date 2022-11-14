@@ -9,10 +9,26 @@ import Foundation
 import UIKit
 
 class NetworkManager{
+    
+    enum HTTPMethod: String {
+        case POST
+        case PUT
+        case GET
+        case DELETE
+    }
+    
+    enum APIs: String {
+        case posts
+        case users
+        case photos
+        case comments
+    }
+    
+    let baseURL = "https://jsonplaceholder.typicode.com/"
 
     func getAllPosts(_ complitionHandler: @escaping ([PostModel]) -> Void){
         
-        if let url = URL(string: "https://jsonplaceholder.typicode.com/posts"){
+        if let url = URL(string: baseURL + APIs.posts.rawValue){
             URLSession.shared.dataTask(with: url) { data, response, error in
                 
                 if error != nil {
@@ -31,7 +47,7 @@ class NetworkManager{
     }
     
     func getFirstPhotoInAlbumBy(id: Int, _ complitionHandler: @escaping (Data) -> Void){
-        if let url = URL(string: "https://jsonplaceholder.typicode.com/photos?albumId=\(id)&id=\(id * 50 - 49)"){
+        if let url = URL(string: baseURL + APIs.photos.rawValue +  "?albumId=\(id)&id=\(id * 50 - 49)"){
             URLSession.shared.dataTask(with: url) { data, response, error in
                 
                 if error != nil {

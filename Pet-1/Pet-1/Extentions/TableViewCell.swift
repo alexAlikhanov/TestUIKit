@@ -9,8 +9,10 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
     var postData : PostModel!
+    let duration: TimeInterval = 0.1
     
     private var collectionView : UICollectionView?
+    private let pageControl = UIPageControl(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
 
     private var userId : UILabel = {
         let userId = UILabel()
@@ -53,6 +55,9 @@ class TableViewCell: UITableViewCell {
         contentView.addSubview(title)
         contentView.addSubview(body)
         createCollectionView()
+        contentView.addSubview(pageControl)
+        pageControl.alpha = 1
+        
     }
     
     private func createCollectionView(){
@@ -66,6 +71,7 @@ class TableViewCell: UITableViewCell {
         collectionView?.dataSource = self
         collectionView?.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView?.isPagingEnabled = true
+        collectionView?.showsHorizontalScrollIndicator = false
         contentView.addSubview(collectionView ?? UICollectionView())
     }
     override func layoutSubviews() {
@@ -74,6 +80,7 @@ class TableViewCell: UITableViewCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         body.translatesAutoresizingMaskIntoConstraints = false
         collectionView?.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             userId.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 5),
@@ -95,6 +102,12 @@ class TableViewCell: UITableViewCell {
         collectionView?.widthAnchor.constraint(equalToConstant: contentView.safeAreaLayoutGuide.layoutFrame.width - 50).isActive = true
         collectionView?.heightAnchor.constraint(equalToConstant: 300).isActive = true
         collectionView?.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        
+        
+        pageControl.centerXAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        pageControl.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+
+        
     
         
     }
@@ -116,9 +129,10 @@ class TableViewCell: UITableViewCell {
 
 }
 
-extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        pageControl.numberOfPages = 3
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -134,5 +148,26 @@ extension TableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, U
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             return CGSize(width: contentView.safeAreaLayoutGuide.layoutFrame.width - 60, height: 280)
         }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        pageControl.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+
+//        let animatorPresent = UIViewPropertyAnimator(duration: duration, curve:.easeOut) {
+//            self.pageControl.alpha = 1
+//        }
+//        animatorPresent.startAnimation()
+    }
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//            let animatorDissmiss = UIViewPropertyAnimator(duration: self.duration, curve:.easeOut) {
+//                self.pageControl.alpha = 0
+//            }
+//            animatorDissmiss.startAnimation()
+//        }
+   
+    }
 }
