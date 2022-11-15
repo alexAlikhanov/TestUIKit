@@ -12,7 +12,7 @@ class SecondFlowNavigator {
     private let navigationController: UINavigationController
     
     init() {
-        let rootVC : UIViewController = SecondRootViewController()
+        let rootVC : UIViewController = MusicSearchVC()
         navigationController = UINavigationController(rootViewController: rootVC)
         
         if let vc = rootVC as? BasicSecondNavigator {
@@ -41,7 +41,7 @@ extension SecondFlowNavigator: Navigator {
         case .vc21:
             distVC = SecondRootViewController()
         case .vc22:
-            distVC = SecondRootViewController()
+            distVC = MusicSearchVC()
         case .vc23:
             distVC = SecondRootViewController()
         }

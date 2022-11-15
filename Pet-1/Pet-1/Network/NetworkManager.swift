@@ -24,6 +24,7 @@ class NetworkManager{
         case comments
     }
     
+    
     let baseURL = "https://jsonplaceholder.typicode.com/"
 
     func getAllPosts(_ complitionHandler: @escaping ([PostModel]) -> Void){
