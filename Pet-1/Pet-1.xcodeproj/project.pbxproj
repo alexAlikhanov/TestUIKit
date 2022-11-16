@@ -203,8 +203,7 @@
 				1F777894291F96DF006525D9 /* PhotoModel.swift */,
 				1F4E3FDE29239D5E00303C51 /* SearchResponse.swift */,
 			);
-			name = Models;
-			path = ..;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
